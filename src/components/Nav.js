@@ -53,7 +53,7 @@ const Logo = styled.a`
   margin-top: 4px;
   max-height: 70px;
   font-size: 0;
-  diplay: inline-block;
+  display: inline-block;
   img {
     display: block;
     width: 100%;
