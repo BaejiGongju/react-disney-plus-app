@@ -1,7 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import './Row.css';
 import axios from '../api/axios';
 import MovieModal from './MovieModal';
-import './Row.css';
+
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// import swiper style
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
+import 'swiper/css/pagination';
+import styled from 'styled-components';
 
 const Row = ({ title, id, fetchUrl }) => {
   const [movies, setMovies] = useState([]);
@@ -32,9 +42,9 @@ const Row = ({ title, id, fetchUrl }) => {
   };
 
   return (
-    <div>
+    <Container>
       <h2>{title}</h2>
-      <div className='slider'>
+      {/* <div className='slider'>
         <div className='slider__arrow-left'>
           <span
             className='arrow'
@@ -66,12 +76,44 @@ const Row = ({ title, id, fetchUrl }) => {
             {'>'}
           </span>
         </div>
-      </div>
+      </div> */}
+      <Swiper
+        // install Swiper modules
+        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        loop={true}
+        navigation
+        pagination={{ clickable: true }}
+      >
+        <Content id={id}>
+          {movies.map((movie) => (
+            <Wrap>
+              <SwiperSlide>
+                <img
+                  key={movie.id}
+                  className='row__poster'
+                  src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                  alt={movie.name}
+                  onClick={() => handleClick(movie)}
+                />
+              </SwiperSlide>
+            </Wrap>
+          ))}
+        </Content>
+      </Swiper>
+
       {modalOpen && (
         <MovieModal {...movieSelected} setModalOpen={setModalOpen} />
       )}
-    </div>
+    </Container>
   );
 };
 
 export default Row;
+
+const Container = styled.div`
+  padding: 0 0 26px;
+`;
+
+const Content = styled.div``;
+
+const Wrap = styled.div``;
